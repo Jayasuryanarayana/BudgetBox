@@ -172,7 +172,9 @@ BudgetBox can be deployed to:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jayasuryanarayana/BudgetBox)
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions including:
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment overview, or [docs/DEPLOYMENT_STEPS.md](docs/DEPLOYMENT_STEPS.md) for a step-by-step walkthrough.
+
+Quick reference:
 - Supabase database setup
 - Vercel configuration
 - Environment variables
