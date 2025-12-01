@@ -109,6 +109,59 @@ See [docs/API.md](docs/API.md) for detailed API documentation.
 
 **Last Write Wins**: Based on `lastUpdated` timestamp comparison.
 
+## Testing Offline Mode
+
+You can verify the offline-first behavior of BudgetBox using your browser DevTools:
+
+### 1. Prepare some data
+
+1. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+2. Open `http://localhost:3000` in your browser.
+3. Enter values in **Income** and a few **expense** fields (Bills, Food, etc.).
+4. Blur the inputs or press **Enter** to trigger auto-save (you’ll see the green checkmark).
+
+### 2. Confirm local persistence (IndexedDB)
+
+1. Refresh the page (Ctrl+R / Cmd+R).
+2. Your previously entered values should still be there — they are loaded from **IndexedDB via Zustand persist**.
+
+### 3. Simulate offline mode
+
+1. Open **DevTools** (F12 or Ctrl+Shift+I).
+2. Go to the **Network** tab.
+3. Enable **Offline**:
+   - In Chrome: Network → Throttling dropdown → select `Offline`.
+4. Observe:
+   - The **Sync Status** card shows **Offline** with a red indicator.
+   - A **toast notification** appears: “You're currently offline. Changes will sync when connection is restored.”
+
+### 4. Edit data while offline
+
+1. Change some values in **BudgetForm** (e.g., increase Food, Bills, etc.).
+2. Blur the field or press **Enter**:
+   - Values update in the UI.
+   - Sync status changes to **Local Only** or **Sync Pending** (depending on previous sync history).
+3. Refresh the page **while still offline**:
+   - Data should still persist — it is served entirely from **IndexedDB**, no network required.
+
+### 5. Come back online and sync
+
+1. In DevTools → Network, turn **Offline** off (back to `Online` or `No throttling`).
+2. A success toast appears: “Connection restored. You're back online!”
+3. Click **“Sync Now”** in the **Sync Status** card:
+   - If you are logged in, the app calls `POST /api/budget/sync`.
+   - On success, the status changes to **Synced**.
+   - If the server has newer data, the client updates with server data (Last Write Wins).
+
+### 6. Optional: Inspect IndexedDB
+
+1. In DevTools, go to **Application** (or “Storage”) tab.
+2. Under **IndexedDB**, find the entry used by the app (Zustand persist + idb-keyval).
+3. You can see the stored budget data object reflecting your latest local changes.
+
 ## License
 
 MIT
