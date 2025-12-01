@@ -103,7 +103,7 @@ See [docs/API.md](docs/API.md) for detailed API documentation.
 ## Database
 
 - **Local**: IndexedDB (via Zustand Persist + idb-keyval)
-- **Server**: PostgreSQL (configurable via `USE_POSTGRES=true`)
+- **Server**: Supabase (PostgreSQL) or PostgreSQL (configurable via `USE_POSTGRES=true`)
 
 ## Sync Strategy
 
@@ -168,15 +168,22 @@ BudgetBox can be deployed to:
 - **Frontend**: Vercel (recommended for Next.js)
 - **Backend**: Supabase (PostgreSQL database)
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions.
-
-### Quick Deploy to Vercel
+### Quick Deploy to Vercel + Supabase
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jayasuryanarayana/BudgetBox)
 
-1. Click the button above or connect your GitHub repo to Vercel
-2. Add environment variables (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md))
-3. Deploy!
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions including:
+- Supabase database setup
+- Vercel configuration
+- Environment variables
+- Database schema migration
+- Troubleshooting guide
+
+### Environment Variables
+
+Required for production:
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
 
 ## License
 

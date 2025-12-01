@@ -8,7 +8,7 @@ interface BudgetRecord {
 
 /**
  * Supabase database functions
- * Uses Supabase client for PostgreSQL operations
+ * Uses @supabase/supabase-js client
  */
 
 let supabaseClient: any = null;
@@ -18,27 +18,20 @@ async function getSupabaseClient() {
     return supabaseClient;
   }
 
-  // Dynamic import to avoid issues in non-browser environments
-  if (typeof window === "undefined") {
-    // Server-side: use @supabase/supabase-js
-    try {
-      const { createClient } = await import("@supabase/supabase-js");
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Dynamic import to avoid SSR issues
+  const { createClient } = await import("@supabase/supabase-js");
+  
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-      if (!supabaseUrl || !supabaseKey) {
-        throw new Error("Supabase environment variables are not configured");
-      }
-
-      supabaseClient = createClient(supabaseUrl, supabaseKey);
-      return supabaseClient;
-    } catch (error) {
-      console.error("Failed to initialize Supabase client:", error);
-      throw new Error("Supabase client initialization failed");
-    }
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
   }
 
-  throw new Error("Supabase client should be initialized server-side");
+  supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+  return supabaseClient;
 }
 
 export async function getBudgetByUserId(
@@ -46,7 +39,7 @@ export async function getBudgetByUserId(
 ): Promise<BudgetRecord | null> {
   try {
     const supabase = await getSupabaseClient();
-
+    
     const { data, error } = await supabase
       .from("budgets")
       .select("user_id, data, last_updated")
@@ -105,4 +98,3 @@ export async function upsertBudget(
     throw error;
   }
 }
-
