@@ -40,12 +40,27 @@ export function useSync() {
   }, []);
 
   /**
-   * Get userId from cookie or use a default
-   * In production, you'd extract this from the auth cookie/token
+   * Get userId from userEmail cookie
+   * Uses the email as the userId for Supabase
    */
   const getUserId = useCallback((): string => {
-    // For now, use a default userId
-    // In production, extract from auth token/cookie
+    if (typeof document === "undefined") return "user-1";
+    
+    // Extract userEmail from cookies
+    const cookies = document.cookie.split(";");
+    const userEmailCookie = cookies.find((cookie) =>
+      cookie.trim().startsWith("userEmail=")
+    );
+    
+    if (userEmailCookie) {
+      const email = decodeURIComponent(
+        userEmailCookie.split("=")[1]?.trim() || ""
+      );
+      // Use email as userId (or hash it for better security)
+      return email || "user-1";
+    }
+    
+    // Fallback to default if no email found
     return "user-1";
   }, []);
 

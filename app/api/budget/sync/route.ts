@@ -110,13 +110,40 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Sync error:", error);
 
-    // Handle database errors
+    // Handle database errors with detailed messages
     if (error instanceof Error) {
+      // Check for common Supabase errors
+      const errorMessage = error.message;
+      
+      if (errorMessage.includes("Missing Supabase environment variables")) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Configuration error",
+            message: "Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.",
+            timestamp: Date.now(),
+          },
+          { status: 500 }
+        );
+      }
+      
+      if (errorMessage.includes("Row Level Security") || errorMessage.includes("RLS")) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Permission denied",
+            message: "Database access denied. Please check Supabase Row Level Security policies.",
+            timestamp: Date.now(),
+          },
+          { status: 403 }
+        );
+      }
+      
       return NextResponse.json(
         {
           success: false,
           error: "Database error",
-          message: error.message,
+          message: errorMessage,
           timestamp: Date.now(),
         },
         { status: 500 }

@@ -48,10 +48,19 @@ export async function getBudgetByUserId(
 
     if (error) {
       if (error.code === "PGRST116") {
-        // No rows returned
+        // No rows returned - this is normal for new users
         return null;
       }
-      throw error;
+      // Log detailed error for debugging
+      console.error("Supabase query error:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      throw new Error(
+        `Supabase error: ${error.message} (Code: ${error.code})`
+      );
     }
 
     if (!data) {
@@ -91,10 +100,22 @@ export async function upsertBudget(
       );
 
     if (error) {
-      throw error;
+      // Log detailed error for debugging
+      console.error("Supabase upsert error:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+      throw new Error(
+        `Supabase upsert error: ${error.message} (Code: ${error.code})`
+      );
     }
   } catch (error) {
     console.error("Error upserting budget to Supabase:", error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("Unknown error occurred while saving to Supabase");
   }
 }
