@@ -17,11 +17,12 @@ CREATE INDEX IF NOT EXISTS idx_budgets_last_updated ON budgets(last_updated);
 ALTER TABLE budgets ENABLE ROW LEVEL SECURITY;
 
 -- Create policy to allow users to access their own data
--- Note: This is a basic policy - adjust based on your authentication strategy
+-- Note: BudgetBox uses cookie-based auth (email as userId), not Supabase Auth
+-- This policy allows all operations for now. For production, you can make it more restrictive.
 CREATE POLICY "Users can access their own budgets"
   ON budgets
   FOR ALL
-  USING (true); -- For now, allow all operations. Adjust based on your auth needs.
+  USING (true);
 
 -- Create function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

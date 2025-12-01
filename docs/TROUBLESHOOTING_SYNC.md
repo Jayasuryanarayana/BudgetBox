@@ -22,13 +22,13 @@ If you're experiencing sync errors after deployment, follow these steps:
 
 **Solution**:
 1. Go to your Supabase Dashboard → SQL Editor
-2. Run this SQL to update the RLS policy:
+2. Copy and run the SQL from `supabase/fix-rls-policy.sql` in your project, or run this:
 
 ```sql
--- Drop existing policy
+-- Drop existing policy (especially if it uses auth.uid())
 DROP POLICY IF EXISTS "Users can access their own budgets" ON budgets;
 
--- Create new policy that allows all operations (for testing)
+-- Create new policy that works with cookie-based auth
 CREATE POLICY "Users can access their own budgets"
   ON budgets
   FOR ALL
@@ -37,6 +37,8 @@ CREATE POLICY "Users can access their own budgets"
 
 3. Click **"Run"** to execute
 4. Try syncing again
+
+**Why?** The old policy uses `auth.uid()` which requires Supabase Auth, but BudgetBox uses cookie-based authentication with email as userId.
 
 **Note**: For production, you should create a more restrictive policy based on your authentication system.
 
