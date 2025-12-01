@@ -28,19 +28,41 @@ A Local-First Personal Budgeting App built with Next.js 15, TypeScript, and Zust
 ### Prerequisites
 
 - Node.js 18+ 
-- npm or yarn
+- npm (comes with Node) or yarn
 
-### Installation
+### 1. Clone the repository
 
 ```bash
-# Install dependencies
-npm install
+git clone https://github.com/Jayasuryanarayana/BudgetBox.git
+cd BudgetBox
+```
 
-# Run development server
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the development server
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Then open `http://localhost:3000` in your browser.
+
+### 4. Build for production (optional)
+
+```bash
+npm run build
+npm start
+```
+
+### 5. Lint the project (optional)
+
+```bash
+npm run lint
+```
 
 ## Project Structure
 
