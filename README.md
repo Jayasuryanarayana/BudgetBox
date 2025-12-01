@@ -23,6 +23,16 @@ A Local-First Personal Budgeting App built with Next.js 15, TypeScript, and Zust
 - **Icons**: Lucide React
 - **Validation**: Zod
 
+## Architecture
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed architecture diagrams including:
+- System architecture overview
+- Data flow diagrams
+- Component hierarchy
+- State management flow
+- Sync strategy sequence
+- Technology stack visualization
+
 ## Getting Started
 
 ### Prerequisites
