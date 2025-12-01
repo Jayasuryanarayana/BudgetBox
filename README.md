@@ -162,6 +162,22 @@ You can verify the offline-first behavior of BudgetBox using your browser DevToo
 2. Under **IndexedDB**, find the entry used by the app (Zustand persist + idb-keyval).
 3. You can see the stored budget data object reflecting your latest local changes.
 
+## Deployment
+
+BudgetBox can be deployed to:
+- **Frontend**: Vercel (recommended for Next.js)
+- **Backend**: Supabase (PostgreSQL database)
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions.
+
+### Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Jayasuryanarayana/BudgetBox)
+
+1. Click the button above or connect your GitHub repo to Vercel
+2. Add environment variables (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md))
+3. Deploy!
+
 ## License
 
 MIT

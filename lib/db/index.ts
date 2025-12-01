@@ -1,6 +1,7 @@
 import type { BudgetData } from "@/lib/types";
 import * as mockDb from "./mockDb";
 import * as postgresDb from "./postgres";
+import * as supabaseDb from "./supabase";
 
 interface BudgetRecord {
   user_id: string;
@@ -8,17 +9,28 @@ interface BudgetRecord {
   last_updated: number;
 }
 
-// Use mock database by default
-// To use PostgreSQL, set USE_POSTGRES=true and configure lib/db/postgres.ts
-const USE_POSTGRES = process.env.USE_POSTGRES === "true";
+// Database selection priority:
+// 1. Supabase (if env vars are set)
+// 2. PostgreSQL (if USE_POSTGRES=true)
+// 3. Mock database (default for development)
+
+const USE_SUPABASE =
+  !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  (!!process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+const USE_POSTGRES = process.env.USE_POSTGRES === "true" && !USE_SUPABASE;
 
 // Export database functions
-// Default to mock database, switch to PostgreSQL when configured
-export const getBudgetByUserId = USE_POSTGRES
+export const getBudgetByUserId = USE_SUPABASE
+  ? supabaseDb.getBudgetByUserId
+  : USE_POSTGRES
   ? postgresDb.getBudgetByUserId
   : mockDb.getBudgetByUserId;
 
-export const upsertBudget = USE_POSTGRES
+export const upsertBudget = USE_SUPABASE
+  ? supabaseDb.upsertBudget
+  : USE_POSTGRES
   ? postgresDb.upsertBudget
   : mockDb.upsertBudget;
 
