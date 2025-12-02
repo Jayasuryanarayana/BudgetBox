@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/Header";
 import { ToastProvider } from "./components/ToastContainer";
+import { ServiceWorkerRegister } from "./components/ServiceWorkerRegister";
 
 export const metadata: Metadata = {
   title: "BudgetBox - Personal Budgeting App",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToastProvider>
+          <ServiceWorkerRegister />
           <Header />
           {children}
         </ToastProvider>
