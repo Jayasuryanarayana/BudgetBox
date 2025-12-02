@@ -78,20 +78,34 @@ npm run lint
 ## Project Structure
 
 ```
-ansumat/
-├── app/
+BudgetBox/
+├── frontend/                 # Frontend documentation entrypoint (Next.js app at repo root)
+│
+├── backend/                  # Backend documentation entrypoint (Supabase + API routes)
+│
+├── app/                      # Next.js 15 App Router (frontend UI + API routes)
 │   ├── api/
-│   │   └── budget/          # REST API endpoints
-│   ├── components/          # React components
-│   ├── login/               # Login page
-│   └── signup/              # Signup page
-├── lib/
-│   ├── auth/                # Authentication utilities
-│   ├── db/                  # Database layer (mock/PostgreSQL)
-│   ├── hooks/               # Custom React hooks
-│   ├── store/               # Zustand store
-│   └── types.ts             # TypeScript types
-└── docs/                    # Documentation
+│   │   └── budget/           # REST API endpoints
+│   ├── components/           # React components
+│   ├── login/                # Login page
+│   └── signup/               # Signup page
+│
+├── lib/                      # Shared frontend/backend logic
+│   ├── auth/                 # Authentication utilities (local user storage)
+│   ├── db/                   # Database adapters (mock/PostgreSQL/Supabase)
+│   ├── hooks/                # Custom React hooks
+│   ├── store/                # Zustand store
+│   └── types.ts              # TypeScript types
+│
+├── supabase/                 # Supabase SQL schema & migration helpers
+│
+├── docs/                     # Documentation
+│   ├── ARCHITECTURE.md       # Architecture diagram (Mermaid)
+│   ├── DEPLOYMENT.md         # High-level deployment guide
+│   ├── DEPLOYMENT_STEPS.md   # Step-by-step deployment guide
+│   └── TROUBLESHOOTING_SYNC.md # Sync troubleshooting
+│
+└── public/                   # Static assets & service worker (sw.js)
 ```
 
 ## API Endpoints
